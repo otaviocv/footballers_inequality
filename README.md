@@ -11,4 +11,4 @@ Until the progess of this question I will wait.
  - Build a docker image to automatize the crawling process
  - Build a docker image for a postgresdb
  - Populate the db with the first image
- - Start doing analysis
+ - Make analysis
