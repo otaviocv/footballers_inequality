@@ -1,17 +1,18 @@
 import pandas as pd
-import numpy as np
 import requests
 from bs4 import BeautifulSoup
 from tqdm import tqdm
 
 headers = {
-   'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.95 Safari/537.36'
+   'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_1) '
+   'AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.95 Safari/537.36'
 }
 
 base_url = 'https://www.transfermarkt.co.uk/'
 region_suffix = 'wettbewerbe/'
 region_url = base_url + region_suffix
 regions_list = ['amerika', 'europa', 'asien', 'europa', 'afrika']
+
 
 def main():
     tables = []
@@ -29,8 +30,10 @@ def get_region_table(url):
     tables = [get_page_table(u) for u in tqdm(urls)]
     return pd.concat(tables)
 
+
 def all_pages_url(url):
     return [url + F'?ajax=yw1&page={u}' for u in range(1, 15)]
+
 
 def get_page_table(url):
     result = requests.get(url, headers=headers)
@@ -84,6 +87,6 @@ def get_foreign_players_percentage(row):
 def get_total_value(row):
     return row.find('td', {'class': 'rechts'}).contents[0]
 
+
 if __name__ == '__main__':
     main()
-
