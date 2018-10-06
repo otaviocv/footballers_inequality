@@ -2,6 +2,7 @@ import pandas as pd
 import requests
 from bs4 import BeautifulSoup
 from tqdm import tqdm
+from time import sleep
 
 headers = {
    'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_1) '
@@ -14,7 +15,7 @@ region_url = base_url + region_suffix
 regions_list = ['amerika', 'europa', 'asien', 'europa', 'afrika']
 
 
-def main():
+def get_all_leagues():
     tables = []
     for region in regions_list:
         url = region_url + region
@@ -22,7 +23,8 @@ def main():
         table = get_region_table(url)
         tables.append(table)
     league_table = pd.concat(tables)
-    league_table.to_csv('leagues.csv')
+    #league_table.to_csv('leagues.csv')
+    return league_table
 
 
 def get_region_table(url):
@@ -37,6 +39,7 @@ def all_pages_url(url):
 
 def get_page_table(url):
     result = requests.get(url, headers=headers)
+    sleep(1)
     soup = BeautifulSoup(result.content, 'html5lib')
     table = soup.find(name='table', attrs={'class': 'items'})
     table_body = table.find(name='tbody')
@@ -51,7 +54,7 @@ def get_page_table(url):
             'players': get_players_number(r),
             'avg_age': get_avg_age(r),
             'foreing_players': get_foreign_players_percentage(r),
-            'total_value': get_total_value(r),
+            'total_market_value': get_total_value(r),
         })
     return pd.DataFrame(t)
 
@@ -86,7 +89,3 @@ def get_foreign_players_percentage(row):
 
 def get_total_value(row):
     return row.find('td', {'class': 'rechts'}).contents[0]
-
-
-if __name__ == '__main__':
-    main()
