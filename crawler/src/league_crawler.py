@@ -39,7 +39,7 @@ def all_pages_url(url):
 
 def get_page_table(url):
     result = requests.get(url, headers=headers)
-    sleep(1)
+    #sleep(1)
     soup = BeautifulSoup(result.content, 'html5lib')
     table = soup.find(name='table', attrs={'class': 'items'})
     table_body = table.find(name='tbody')

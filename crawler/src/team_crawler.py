@@ -31,7 +31,7 @@ def get_league_table(league_name, league_url):
 def get_teams(league_url):
     print(league_url)
     result = requests.get(league_url, headers=headers)
-    sleep(1)
+    #sleep(3)
     soup = BeautifulSoup(result.content, 'html5lib')
     if is_cup(soup):
         return pd.DataFrame()
