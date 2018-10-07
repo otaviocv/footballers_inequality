@@ -18,7 +18,7 @@ def get_all_teams(leagues_list):
         url = base_url + league_url[1:]
         table = get_league_table(league_name, url)
         tables.append(table)
-    teams_table = pd.concat(tables)
+    teams_table = pd.concat(tables, sort=True)
     return teams_table
 
 
@@ -33,6 +33,7 @@ def get_teams(league_url):
     result = requests.get(league_url, headers=headers)
     #sleep(3)
     soup = BeautifulSoup(result.content, 'html5lib')
+    print(is_cup(soup))
     if is_cup(soup):
         return pd.DataFrame()
     table = soup.find(name='table', attrs={'class': 'items'})
@@ -53,12 +54,8 @@ def get_teams(league_url):
 
 
 def is_cup(soup):
-    try:
-        table_header = str(soup.find('div', {'class': 'table-header'}).contents[0])
-        return 'Clubs' not in table_header
-    except AttributeError:
-        print('Cup or League inference error')
-        return True
+    type_of_cup = soup.find('span', {'class': 'dataItem'})
+    return type_of_cup != None
 
 
 def get_team_name(row):
