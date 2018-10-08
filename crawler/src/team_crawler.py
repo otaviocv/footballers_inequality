@@ -3,6 +3,7 @@ import requests
 from bs4 import BeautifulSoup
 from tqdm import tqdm
 from time import sleep
+import hashlib
 
 headers = {
    'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_1) '
@@ -10,28 +11,34 @@ headers = {
 }
 
 base_url = 'https://www.transfermarkt.co.uk/'
-
+s = requests.Session()
+s.headers.update(headers)
 
 def get_all_teams(leagues_list):
     tables = []
-    for league_name, league_url in tqdm(leagues_list):
+    for league_id, league_url in tqdm(leagues_list):
         url = base_url + league_url[1:]
-        table = get_league_table(league_name, url)
+        table = get_league_table(league_id, url)
         tables.append(table)
-    teams_table = pd.concat(tables, sort=True)
+    teams_table = pd.concat(tables, sort=True) \
+                    .drop_duplicates() \
+                    .reset_index()
+    teams_id = teams_table.apply(lambda x: hashlib.md5((x.league_id +
+                                                        x.team).encode())
+                                                  .hexdigest(), axis=1)
+    teams_table['team_id'] = teams_id
     return teams_table
 
 
-def get_league_table(league_name, league_url):
+def get_league_table(league_id, league_url):
     league_table = get_teams(league_url)
-    league_table['league'] = league_name
+    league_table['league_id'] = league_id
     return league_table
 
 
 def get_teams(league_url):
     print(league_url)
-    result = requests.get(league_url, headers=headers)
-    #sleep(3)
+    result = s.get(league_url)
     soup = BeautifulSoup(result.content, 'html5lib')
     print(is_cup(soup))
     if is_cup(soup):

@@ -2,7 +2,7 @@ import pandas as pd
 import requests
 from bs4 import BeautifulSoup
 from tqdm import tqdm
-from time import sleep
+import hashlib
 
 headers = {
    'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_1) '
@@ -12,7 +12,7 @@ headers = {
 base_url = 'https://www.transfermarkt.co.uk/'
 region_suffix = 'wettbewerbe/'
 region_url = base_url + region_suffix
-regions_list = ['amerika', 'europa', 'asien', 'europa', 'afrika']
+regions_list = ['amerika']#, 'europa', 'asien', 'europa', 'afrika']
 
 
 def get_all_leagues():
@@ -22,7 +22,13 @@ def get_all_leagues():
         print(url)
         table = get_region_table(url)
         tables.append(table)
-    league_table = pd.concat(tables)
+    league_table = pd.concat(tables) \
+                     .drop_duplicates() \
+                     .reset_index(drop=True)
+    league_ids = league_table.apply(lambda x: hashlib.md5((x.country +
+                                                           x.league).encode())
+                                                     .hexdigest(), axis=1)
+    league_table['league_id'] = league_ids
     #league_table.to_csv('leagues.csv')
     return league_table
 
