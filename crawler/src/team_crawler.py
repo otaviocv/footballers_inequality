@@ -2,7 +2,6 @@ import pandas as pd
 import requests
 from bs4 import BeautifulSoup
 from tqdm import tqdm
-from time import sleep
 import hashlib
 
 headers = {
@@ -14,6 +13,7 @@ base_url = 'https://www.transfermarkt.co.uk/'
 s = requests.Session()
 s.headers.update(headers)
 
+
 def get_all_teams(leagues_list):
     tables = []
     for league_id, league_url in tqdm(leagues_list):
@@ -22,7 +22,7 @@ def get_all_teams(leagues_list):
         tables.append(table)
     teams_table = pd.concat(tables, sort=True) \
                     .drop_duplicates() \
-                    .reset_index()
+                    .reset_index(drop=True)
     teams_id = teams_table.apply(lambda x: hashlib.md5((x.league_id +
                                                         x.team).encode())
                                                   .hexdigest(), axis=1)
@@ -44,6 +44,8 @@ def get_teams(league_url):
     if is_cup(soup):
         return pd.DataFrame()
     table = soup.find(name='table', attrs={'class': 'items'})
+    if table is None:
+        return pd.DataFrame()
     table_body = table.find(name='tbody')
     rows = table_body.findAll('tr', attrs={'class': ['odd', 'even']})
     t = []
@@ -62,7 +64,7 @@ def get_teams(league_url):
 
 def is_cup(soup):
     type_of_cup = soup.find('span', {'class': 'dataItem'})
-    return type_of_cup != None
+    return type_of_cup is not None
 
 
 def get_team_name(row):
@@ -78,7 +80,6 @@ def get_n_of_players(row):
     if len(tds) <= 3:
         return None
     return tds[3].find('a').contents[0]
-    
 
 
 def get_avg_age(row):
