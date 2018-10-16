@@ -2,8 +2,6 @@ import pandas as pd
 import requests
 from bs4 import BeautifulSoup
 from tqdm import tqdm
-from time import sleep
-import hashlib
 
 headers = {
    'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_1) '
@@ -17,13 +15,13 @@ s.headers.update(headers)
 
 def get_all_players(teams_list):
     tables = []
-    for team_id, team_url in tqdm(teams_list]):
+    for team_id, team_url in tqdm(teams_list[365:]):
         url = base_url + team_url[1:]
         table = get_team_table(team_id, url)
         tables.append(table)
     players_table = pd.concat(tables, sort=True) \
-                    .drop_duplicates() \
-                    .reset_index()
+                      .drop_duplicates() \
+                      .reset_index(drop=True)
     return players_table
 
 
@@ -32,11 +30,14 @@ def get_team_table(team_id, team_url):
     team_table['team_id'] = team_id
     return team_table
 
+
 def get_players(team_url):
     print(team_url)
     result = s.get(team_url)
     soup = BeautifulSoup(result.content, 'html5lib')
     table = soup.find(name='table', attrs={'class': 'items'})
+    if table is None:
+        return pd.DataFrame()
     table_body = table.find(name='tbody')
     rows = table_body.findAll('tr', attrs={'class': ['odd', 'even']})
     t = []

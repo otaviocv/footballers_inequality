@@ -12,7 +12,7 @@ headers = {
 base_url = 'https://www.transfermarkt.co.uk/'
 region_suffix = 'wettbewerbe/'
 region_url = base_url + region_suffix
-regions_list = ['amerika']#, 'europa', 'asien', 'europa', 'afrika']
+regions_list = ['amerika', 'europa', 'asien', 'europa', 'afrika']
 
 
 def get_all_leagues():
@@ -29,7 +29,6 @@ def get_all_leagues():
                                                            x.league).encode())
                                                      .hexdigest(), axis=1)
     league_table['league_id'] = league_ids
-    #league_table.to_csv('leagues.csv')
     return league_table
 
 
@@ -45,7 +44,6 @@ def all_pages_url(url):
 
 def get_page_table(url):
     result = requests.get(url, headers=headers)
-    #sleep(1)
     soup = BeautifulSoup(result.content, 'html5lib')
     table = soup.find(name='table', attrs={'class': 'items'})
     table_body = table.find(name='tbody')
