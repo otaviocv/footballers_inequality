@@ -15,7 +15,7 @@ s.headers.update(headers)
 
 def get_all_players(teams_list):
     tables = []
-    for team_id, team_url in tqdm(teams_list[365:]):
+    for team_id, team_url in tqdm(teams_list):
         url = base_url + team_url[1:]
         table = get_team_table(team_id, url)
         tables.append(table)
@@ -36,7 +36,8 @@ def get_players(team_url):
     result = s.get(team_url)
     soup = BeautifulSoup(result.content, 'html5lib')
     table = soup.find(name='table', attrs={'class': 'items'})
-    if table is None:
+    print(squad_is_empty(soup))
+    if table is None or squad_is_empty(soup):
         return pd.DataFrame()
     table_body = table.find(name='tbody')
     rows = table_body.findAll('tr', attrs={'class': ['odd', 'even']})
@@ -51,6 +52,13 @@ def get_players(team_url):
             'market_value': get_market_value(r)
         })
     return pd.DataFrame(t)
+
+
+def squad_is_empty(soup):
+    empty_table = soup.find('span', {'class': 'empty'})
+    if empty_table is None:
+        return False
+    return True
 
 
 def get_number(row):
