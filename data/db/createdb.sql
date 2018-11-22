@@ -30,3 +30,14 @@ VALUES ('https://www.transfermarkt.co.uk/wettbewerbe/afrika?page=1', LOCALTIMEST
 ('https://www.transfermarkt.co.uk/wettbewerbe/europa?page=14', LOCALTIMESTAMP(0), 'new'),
 ('https://www.transfermarkt.co.uk/wettbewerbe/europa?page=15', LOCALTIMESTAMP(0), 'new'),
 ('https://www.transfermarkt.co.uk/wettbewerbe/europa?page=16', LOCALTIMESTAMP(0), 'new');
+
+CREATE TABLE leagues (
+    ID serial PRIMARY KEY,
+    league varchar(100) UNIQUE NOT NULL,
+    country varchar(100) NOT NULL,
+    clubs smallint NOT NULL,
+    players smallint NOT NULL,
+    avg_age real NOT NULL,
+    foreing_players real NOT NULL,
+    total_value real NOT NULL
+);
