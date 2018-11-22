@@ -3,33 +3,34 @@ CREATE TABLE catalog (
     url varchar(255) UNIQUE NOT NULL,
     date_added timestamp NOT NULL,
     date_updated timestamp,
-    status varchar(20) NOT NULL
+    status varchar(20) NOT NULL,
+    page_type varchar(20) NOT NULL
 );
 
 
-INSERT INTO catalog (url, date_added, status)
-VALUES ('https://www.transfermarkt.co.uk/wettbewerbe/afrika?page=1', LOCALTIMESTAMP(0), 'new'),
-('https://www.transfermarkt.co.uk/wettbewerbe/amerika?page=1', LOCALTIMESTAMP(0), 'new'),
-('https://www.transfermarkt.co.uk/wettbewerbe/amerika?page=2', LOCALTIMESTAMP(0), 'new'),
-('https://www.transfermarkt.co.uk/wettbewerbe/asien?page=1', LOCALTIMESTAMP(0), 'new'),
-('https://www.transfermarkt.co.uk/wettbewerbe/asien?page=2', LOCALTIMESTAMP(0), 'new'),
-('https://www.transfermarkt.co.uk/wettbewerbe/asien?page=3', LOCALTIMESTAMP(0), 'new'),
-('https://www.transfermarkt.co.uk/wettbewerbe/europa?page=1', LOCALTIMESTAMP(0), 'new'),
-('https://www.transfermarkt.co.uk/wettbewerbe/europa?page=2', LOCALTIMESTAMP(0), 'new'),
-('https://www.transfermarkt.co.uk/wettbewerbe/europa?page=3', LOCALTIMESTAMP(0), 'new'),
-('https://www.transfermarkt.co.uk/wettbewerbe/europa?page=4', LOCALTIMESTAMP(0), 'new'),
-('https://www.transfermarkt.co.uk/wettbewerbe/europa?page=5', LOCALTIMESTAMP(0), 'new'),
-('https://www.transfermarkt.co.uk/wettbewerbe/europa?page=6', LOCALTIMESTAMP(0), 'new'),
-('https://www.transfermarkt.co.uk/wettbewerbe/europa?page=7', LOCALTIMESTAMP(0), 'new'),
-('https://www.transfermarkt.co.uk/wettbewerbe/europa?page=8', LOCALTIMESTAMP(0), 'new'),
-('https://www.transfermarkt.co.uk/wettbewerbe/europa?page=9', LOCALTIMESTAMP(0), 'new'),
-('https://www.transfermarkt.co.uk/wettbewerbe/europa?page=10', LOCALTIMESTAMP(0), 'new'),
-('https://www.transfermarkt.co.uk/wettbewerbe/europa?page=11', LOCALTIMESTAMP(0), 'new'),
-('https://www.transfermarkt.co.uk/wettbewerbe/europa?page=12', LOCALTIMESTAMP(0), 'new'),
-('https://www.transfermarkt.co.uk/wettbewerbe/europa?page=13', LOCALTIMESTAMP(0), 'new'),
-('https://www.transfermarkt.co.uk/wettbewerbe/europa?page=14', LOCALTIMESTAMP(0), 'new'),
-('https://www.transfermarkt.co.uk/wettbewerbe/europa?page=15', LOCALTIMESTAMP(0), 'new'),
-('https://www.transfermarkt.co.uk/wettbewerbe/europa?page=16', LOCALTIMESTAMP(0), 'new');
+INSERT INTO catalog (url, date_added, status, page_type)
+VALUES ('https://www.transfermarkt.co.uk/wettbewerbe/afrika?page=1', CURRENT_TIMESTAMP(0), 'new', 'area'),
+('https://www.transfermarkt.co.uk/wettbewerbe/amerika?page=1', CURRENT_TIMESTAMP(0), 'new', 'area'),
+('https://www.transfermarkt.co.uk/wettbewerbe/amerika?page=2', CURRENT_TIMESTAMP(0), 'new', 'area'),
+('https://www.transfermarkt.co.uk/wettbewerbe/asien?page=1', CURRENT_TIMESTAMP(0), 'new', 'area'),
+('https://www.transfermarkt.co.uk/wettbewerbe/asien?page=2', CURRENT_TIMESTAMP(0), 'new', 'area'),
+('https://www.transfermarkt.co.uk/wettbewerbe/asien?page=3', CURRENT_TIMESTAMP(0), 'new', 'area'),
+('https://www.transfermarkt.co.uk/wettbewerbe/europa?page=1', CURRENT_TIMESTAMP(0), 'new', 'area'),
+('https://www.transfermarkt.co.uk/wettbewerbe/europa?page=2', CURRENT_TIMESTAMP(0), 'new', 'area'),
+('https://www.transfermarkt.co.uk/wettbewerbe/europa?page=3', CURRENT_TIMESTAMP(0), 'new', 'area'),
+('https://www.transfermarkt.co.uk/wettbewerbe/europa?page=4', CURRENT_TIMESTAMP(0), 'new', 'area'),
+('https://www.transfermarkt.co.uk/wettbewerbe/europa?page=5', CURRENT_TIMESTAMP(0), 'new', 'area'),
+('https://www.transfermarkt.co.uk/wettbewerbe/europa?page=6', CURRENT_TIMESTAMP(0), 'new', 'area'),
+('https://www.transfermarkt.co.uk/wettbewerbe/europa?page=7', CURRENT_TIMESTAMP(0), 'new', 'area'),
+('https://www.transfermarkt.co.uk/wettbewerbe/europa?page=8', CURRENT_TIMESTAMP(0), 'new', 'area'),
+('https://www.transfermarkt.co.uk/wettbewerbe/europa?page=9', CURRENT_TIMESTAMP(0), 'new', 'area'),
+('https://www.transfermarkt.co.uk/wettbewerbe/europa?page=10', CURRENT_TIMESTAMP(0), 'new', 'area'),
+('https://www.transfermarkt.co.uk/wettbewerbe/europa?page=11', CURRENT_TIMESTAMP(0), 'new', 'area'),
+('https://www.transfermarkt.co.uk/wettbewerbe/europa?page=12', CURRENT_TIMESTAMP(0), 'new', 'area'),
+('https://www.transfermarkt.co.uk/wettbewerbe/europa?page=13', CURRENT_TIMESTAMP(0), 'new', 'area'),
+('https://www.transfermarkt.co.uk/wettbewerbe/europa?page=14', CURRENT_TIMESTAMP(0), 'new', 'area'),
+('https://www.transfermarkt.co.uk/wettbewerbe/europa?page=15', CURRENT_TIMESTAMP(0), 'new', 'area'),
+('https://www.transfermarkt.co.uk/wettbewerbe/europa?page=16', CURRENT_TIMESTAMP(0), 'new', 'area');
 
 CREATE TABLE leagues (
     ID serial PRIMARY KEY,
