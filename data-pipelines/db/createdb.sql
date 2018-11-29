@@ -40,5 +40,5 @@ CREATE TABLE leagues (
     players smallint NOT NULL,
     avg_age real NOT NULL,
     foreing_players real NOT NULL,
-    total_value real NOT NULL
+    total_market_value real NOT NULL
 );

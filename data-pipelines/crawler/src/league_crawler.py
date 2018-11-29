@@ -4,15 +4,12 @@ from bs4 import BeautifulSoup
 from tqdm import tqdm
 import hashlib
 
+from utils import convert_market_value
+
 headers = {
    'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_1) '
    'AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.95 Safari/537.36'
 }
-
-region_suffix = 'wettbewerbe/'
-region_url = base_url + region_suffix
-regions_list = ['amerika', 'europa', 'asien', 'europa', 'afrika']
-
 
 def get_all_leagues():
     tables = []
@@ -75,20 +72,25 @@ def get_country(row):
 
 
 def get_clubs_number(row):
-    return row.findAll('td', {'class': 'zentriert'})[1].contents[0]
+    r = row.findAll('td', {'class': 'zentriert'})[1].contents[0]
+    return int(r)
 
 
 def get_players_number(row):
-    return row.findAll('td', {'class': 'zentriert'})[2].contents[0]
+    r = row.findAll('td', {'class': 'zentriert'})[2].contents[0]
+    return int(r)
 
 
 def get_avg_age(row):
-    return row.findAll('td', {'class': 'zentriert'})[3].contents[0]
+    r = row.findAll('td', {'class': 'zentriert'})[3].contents[0]
+    return float(r.replace(',', '.'))
 
 
 def get_foreign_players_percentage(row):
-    return row.findAll('td', {'class': 'zentriert'})[4].find('a').contents[0]
+    r = row.findAll('td', {'class': 'zentriert'})[4].find('a').contents[0]
+    return float(r.replace(',', '.').replace('%', ''))
 
 
 def get_total_value(row):
-    return row.find('td', {'class': 'rechts'}).contents[0]
+    r = row.find('td', {'class': 'rechts'}).contents[0]
+    return convert_market_value(r)
