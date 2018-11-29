@@ -57,12 +57,13 @@ VALUES ('%s', '%s', '%s', '%s', '%s', '%s', '%s')
     info_dict['foreing_players'],
     info_dict['total_market_value'],
 )
-        print(league_query)
-        catalog_query =F"""
+        catalog_query = """
 INSERT INTO catalog (url, date_added, status, , page_type)
 VALUES ('%s', CURRENT_TIMESTAMP(0), 'new', 'league')
 """ % (base_url + info_dict['url'])
-        print(catalog_query)
+        cursor.execute(league_query)
+        cursor.execute(catalog_query)
+        cursons.commit()
     
 
 def get_league_results(url):
