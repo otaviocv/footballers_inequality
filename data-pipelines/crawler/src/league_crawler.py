@@ -9,7 +9,6 @@ headers = {
    'AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.95 Safari/537.36'
 }
 
-base_url = 'https://www.transfermarkt.co.uk/'
 region_suffix = 'wettbewerbe/'
 region_url = base_url + region_suffix
 regions_list = ['amerika', 'europa', 'asien', 'europa', 'afrika']
