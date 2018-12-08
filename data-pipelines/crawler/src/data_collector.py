@@ -22,6 +22,7 @@ def main():
         print(row)
         id, url, date_added, date_updated, status, page_type = row
         get_results(url, page_type)
+        cursor.execute(F"UPDATE catalog SET status = 'ok' WHERE url = '{url}'")
         #try:
             #get_results(url, page_type)
         #except:
@@ -58,12 +59,12 @@ VALUES ('%s', '%s', '%s', '%s', '%s', '%s', '%s')
     info_dict['total_market_value'],
 )
         catalog_query = """
-INSERT INTO catalog (url, date_added, status, , page_type)
+INSERT INTO catalog (url, date_added, status, page_type)
 VALUES ('%s', CURRENT_TIMESTAMP(0), 'new', 'league')
 """ % (base_url + info_dict['url'])
         cursor.execute(league_query)
         cursor.execute(catalog_query)
-        cursons.commit()
+        conn.commit()
     
 
 def get_league_results(url):
@@ -82,7 +83,18 @@ def content_list(url):
     table_body = table.find(name='tbody')
     rows = table_body.findAll('tr', attrs={'class': ['odd', 'even']})
     return rows
-def collect_league_info(r): return { 'league': get_league_name(r), 'url': get_league_url(r), 'country': get_country(r), 'clubs': get_clubs_number(r), 'players': get_players_number(r), 'avg_age': get_avg_age(r), 'foreing_players': get_foreign_players_percentage(r), 'total_market_value': get_total_value(r), }
+
+def collect_league_info(r):
+    return {
+            'league': get_league_name(r),
+            'url': get_league_url(r),
+            'country': get_country(r),
+            'clubs': get_clubs_number(r),
+            'players': get_players_number(r),
+            'avg_age': get_avg_age(r),
+            'foreing_players': get_foreign_players_percentage(r),
+            'total_market_value': get_total_value(r),
+            }
 
 
 if __name__ == '__main__':

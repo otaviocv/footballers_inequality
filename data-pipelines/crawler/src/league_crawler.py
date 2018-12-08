@@ -60,7 +60,8 @@ def get_page_table(url):
 
 
 def get_league_name(row):
-    return row.find('img', {'class': ""}).get("alt")
+    r = row.find('img', {'class': ""}).get("alt")
+    return r.replace("'", ' ')
 
 
 def get_league_url(row):
@@ -78,7 +79,7 @@ def get_clubs_number(row):
 
 def get_players_number(row):
     r = row.findAll('td', {'class': 'zentriert'})[2].contents[0]
-    return int(r)
+    return int(r.replace('.', ''))
 
 
 def get_avg_age(row):
@@ -93,4 +94,6 @@ def get_foreign_players_percentage(row):
 
 def get_total_value(row):
     r = row.find('td', {'class': 'rechts'}).contents[0]
-    return convert_market_value(r)
+    v = convert_market_value(r)
+    print(v)
+    return v
